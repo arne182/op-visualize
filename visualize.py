@@ -44,7 +44,6 @@ plt.xlabel('Users')
 plt.title('Location')
 for i, v in enumerate(pltx):
     plt.text(plty[i]+.05, i-.25, str(plty[i]), color='blue', fontweight='bold')
-plt.setp(4)
 
 plt.show()
 
