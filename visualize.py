@@ -7,8 +7,12 @@ import os
 import numpy as np
 import load_api as la
 events=la.get_events("SENTRY_API_TOKEN_HERE")
+eventIPs = {}
+for i in events:
+    if i["user"]["id"] not in eventIPs:
+        eventIPs[i["user"]["id"]] = i["user"]["ip_address"]
 
-eventIPs = list(set([i["user"]["ip_address"] for i in events]))
+events = [eventIPs[i] for i in eventIPs]
 locations = []
 
 params = dict(
@@ -19,7 +23,7 @@ params = dict(
 
 locationDict = {}
 counter=0
-for ip in eventIPs:
+for ip in events:
     response = requests.get(url="https://ipinfo.io/"+str(ip)+"/json", params=params)
     data = response.json()
     loc = data['region']  # also can append data['city'] or data['country']
@@ -47,5 +51,5 @@ for i, v in enumerate(pltx):
 
 plt.show()
 
-print(eventIPs)
+print(events)
 print(locations)
